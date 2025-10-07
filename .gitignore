@@ -1,0 +1,24 @@
+# Dependencias de Node
+/node_modules
+/package-lock.json
+
+# Archivos de entorno y secretos
+# ¡ESTO ES LO MÁS IMPORTANTE PARA LA SEGURIDAD!
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Archivos de caché
+.DS_Store
+npm-debug.log
+yarn-error.log
+/build
+/dist
+
+# Logs y bases de datos locales (si los usas)
+*.log
+*.sqlite
+*.sqlite3
+/data
