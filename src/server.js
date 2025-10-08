@@ -44,5 +44,5 @@ app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
   snapshotJob.start();
   reminderJob.start(); // Iniciamos también el nuevo job
-  console.log('🕒 Tareas de snapshot (semanal) y recordatorios (diarios) programadas.');
+  console.log('🕒 Tareas de snapshot y recordatorios (diarios) programadas.');
 });
