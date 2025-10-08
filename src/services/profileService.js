@@ -174,12 +174,9 @@ const archetypes = {
   }
 };
 
-// 2. Creamos la función que calcula el arquetipo (SIN CAMBIOS)
+// 2. Función mejorada para calcular el arquetipo con tolerancias y control de empates
 function calculateArchetype(profile) {
-  // Verificación para asegurarnos de que el perfil no es nulo
-  if (!profile) {
-    return archetypes['default'];
-  }
+  if (!profile) return archetypes["default"];
 
   const traits = {
     openness: profile.openness,
@@ -189,30 +186,26 @@ function calculateArchetype(profile) {
     neuroticism: profile.neuroticism,
   };
 
-  let highestTrait = 'openness';
-  let lowestTrait = 'openness';
+  // Ordenamos los rasgos de mayor a menor
+  const sortedTraits = Object.entries(traits).sort((a, b) => b[1] - a[1]);
+  const [topTrait, topValue] = sortedTraits[0];
+  const [secondTrait, secondValue] = sortedTraits[1];
+  const [bottomTrait, bottomValue] = sortedTraits[sortedTraits.length - 1];
 
-  for (const trait in traits) {
-    if (traits[trait] > traits[highestTrait]) {
-      highestTrait = trait;
-    }
-    if (traits[trait] < traits[lowestTrait]) {
-      lowestTrait = trait;
-    }
+  // --- Opción B: Control de empates entre rasgos altos ---
+  if (Math.abs(topValue - secondValue) < 0.05) {
+    return archetypes["default"];
   }
 
-  // Si el rasgo más alto y el más bajo son el mismo (o muy cercanos),
-  // asignamos directamente el arquetipo de equilibrio.
-  if (highestTrait === lowestTrait) {
-    return archetypes['default'];
+  // --- Opción A: Umbral de diferencia mínima ---
+  const diff = topValue - bottomValue;
+  if (diff < 0.1) {
+    return archetypes["default"];
   }
 
-  const key = `${highestTrait}-${lowestTrait}`;
-  
-  // La clave de la lógica: Busca la nueva clave o regresa al default si no existe
-  return archetypes[key] || archetypes['default'];
+  // Construimos la clave del arquetipo
+  const key = `${topTrait}-${bottomTrait}`;
+  return archetypes[key] || archetypes["default"];
 }
 
-module.exports = {
-  calculateArchetype,
-};
+module.exports = { calculateArchetype };
