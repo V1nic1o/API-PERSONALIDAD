@@ -18,7 +18,10 @@ const app = express();
 testConnection();
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'https://inner-journey.vercel.app'
+  ],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
