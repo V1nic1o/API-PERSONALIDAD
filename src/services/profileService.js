@@ -1,37 +1,41 @@
 // src/services/profileService.js
 
-// 1. Definimos nuestros arquetipos. (EXPANDIDO a las 20 combinaciones ALTO-BAJO)
+// 1. Definimos nuestros arquetipos
 const archetypes = {
   // ==========================================================
   // 1. Apertura (Openness) Alta
   // ==========================================================
   "openness-conscientiousness": {
     name: "El Visionario Creativo",
-    description: "Eres una fuente de ideas innovadoras, pero a veces te cuesta llevarlas a la práctica de forma ordenada. Tu mente vuela alto, viendo posibilidades que otros no ven.",
+    description:
+      "Eres una fuente de ideas innovadoras, pero a veces te cuesta llevarlas a la práctica de forma ordenada. Tu mente vuela alto, viendo posibilidades que otros no ven.",
     superpower: "Imaginación sin límites.",
     challenge: "Canalizar tu creatividad en proyectos concretos y terminados.",
-    challengeTrait: "conscientiousness"
+    challengeTrait: "conscientiousness",
   },
   "openness-extraversion": {
     name: "El Explorador Contemplativo",
-    description: "Valorizas profundamente el conocimiento y la estética, prefiriendo explorar ideas y mundos internos antes que la acción social. Tiendes a ser reservado pero mentalmente ágil.",
+    description:
+      "Valorizas profundamente el conocimiento y la estética, prefiriendo explorar ideas y mundos internos antes que la acción social. Tiendes a ser reservado pero mentalmente ágil.",
     superpower: "Profundidad de pensamiento e ideas originales.",
     challenge: "Compartir tus ideas y conectar con otros de forma más activa.",
-    challengeTrait: "extraversion"
+    challengeTrait: "extraversion",
   },
   "openness-agreeableness": {
     name: "El Buscador Escéptico",
-    description: "Tu curiosidad te lleva a cuestionar constantemente el status quo y las convenciones, lo que a veces te hace percibir como cínico o difícil de convencer. Buscas la verdad más allá de la armonía.",
+    description:
+      "Tu curiosidad te lleva a cuestionar constantemente el status quo y las convenciones, lo que a veces te hace percibir como cínico o difícil de convencer. Buscas la verdad más allá de la armonía.",
     superpower: "Análisis crítico y mentalidad independiente.",
     challenge: "Aceptar las perspectivas de los demás con mayor flexibilidad.",
-    challengeTrait: "agreeableness"
+    challengeTrait: "agreeableness",
   },
   "openness-neuroticism": {
     name: "El Intelectual Sensible",
-    description: "Tu intensa sensibilidad emocional potencia tu aprecio por el arte y las ideas complejas. Experimentas el mundo con gran profundidad, lo cual puede llevarte a sobreanalizar o preocuparte en exceso.",
+    description:
+      "Tu intensa sensibilidad emocional potencia tu aprecio por el arte y las ideas complejas. Experimentas el mundo con gran profundidad, lo cual puede llevarte a sobreanalizar o preocuparte en exceso.",
     superpower: "Percepción intuitiva y emocional.",
     challenge: "Establecer límites mentales para reducir el estrés y la rumia.",
-    challengeTrait: "neuroticism"
+    challengeTrait: "neuroticism",
   },
 
   // ==========================================================
@@ -39,31 +43,36 @@ const archetypes = {
   // ==========================================================
   "conscientiousness-openness": {
     name: "El Arquitecto Confiable",
-    description: "Eres la persona en la que todos confían para que las cosas se hagan bien. Tu disciplina y orden son notables, aunque a veces te cuesta salir de la rutina y probar algo nuevo.",
+    description:
+      "Eres la persona en la que todos confían para que las cosas se hagan bien. Tu disciplina y orden son notables, aunque a veces te cuesta salir de la rutina y probar algo nuevo.",
     superpower: "Fiabilidad y ejecución impecable.",
     challenge: "Abrazar la espontaneidad y explorar nuevas experiencias.",
-    challengeTrait: "openness"
+    challengeTrait: "openness",
   },
   "conscientiousness-extraversion": {
     name: "El Gestor Solitario",
-    description: "Eres altamente organizado y enfocado en la tarea, pero prefieres la eficiencia del trabajo individual. Tu disciplina es interna, y la interacción social es una distracción.",
+    description:
+      "Eres altamente organizado y enfocado en la tarea, pero prefieres la eficiencia del trabajo individual. Tu disciplina es interna, y la interacción social es una distracción.",
     superpower: "Concentración y eficiencia en tareas complejas.",
     challenge: "Construir redes de apoyo y delegar responsabilidades.",
-    challengeTrait: "extraversion"
+    challengeTrait: "extraversion",
   },
   "conscientiousness-agreeableness": {
     name: "El Juez Riguroso",
-    description: "Te adhieres a reglas y estándares altos de ética y trabajo. Valoras el orden por encima del sentimiento, y a veces tu franqueza sobre los errores puede parecer crítica o insensible.",
+    description:
+      "Te adhieres a reglas y estándares altos de ética y trabajo. Valoras el orden por encima del sentimiento, y a veces tu franqueza sobre los errores puede parecer crítica o insensible.",
     superpower: "Integridad inquebrantable y alta productividad.",
     challenge: "Suavizar tu enfoque y priorizar las relaciones humanas.",
-    challengeTrait: "agreeableness"
+    challengeTrait: "agreeableness",
   },
   "conscientiousness-neuroticism": {
     name: "La Roca Serena",
-    description: "Eres disciplinado y emocionalmente estable, una fuerza tranquila en medio del caos. Tu capacidad para mantener la calma es admirable, aunque a veces puedes pasar por alto los matices emocionales de una situación.",
+    description:
+      "Eres disciplinado y emocionalmente estable, una fuerza tranquila en medio del caos. Tu capacidad para mantener la calma es admirable, aunque a veces puedes pasar por alto los matices emocionales de una situación.",
     superpower: "Estabilidad y resiliencia.",
-    challenge: "Conectar con tus propias emociones y las de los demás con más curiosidad.",
-    challengeTrait: "neuroticism"
+    challenge:
+      "Conectar con tus propias emociones y las de los demás con más curiosidad.",
+    challengeTrait: "neuroticism",
   },
 
   // ==========================================================
@@ -71,31 +80,35 @@ const archetypes = {
   // ==========================================================
   "extraversion-openness": {
     name: "El Animador Popular",
-    description: "Tu energía viene de la interacción con los demás y te enfocas en la acción social y las experiencias compartidas. A veces, la necesidad de estímulos externos te impide profundizar en ideas complejas.",
+    description:
+      "Tu energía viene de la interacción con los demás y te enfocas en la acción social y las experiencias compartidas. A veces, la necesidad de estímulos externos te impide profundizar en ideas complejas.",
     superpower: "Liderazgo enérgico e influencia social.",
     challenge: "Dedicar tiempo a la reflexión y el autoanálisis profundo.",
-    challengeTrait: "openness"
+    challengeTrait: "openness",
   },
   "extraversion-conscientiousness": {
     name: "El Vendedor Impulsivo",
-    description: "Eres un motor de entusiasmo social, siempre buscando la próxima actividad emocionante. Sin embargo, tu alta energía a veces se traduce en falta de planificación o seguimiento de proyectos.",
+    description:
+      "Eres un motor de entusiasmo social, siempre buscando la próxima actividad emocionante. Sin embargo, tu alta energía a veces se traduce en falta de planificación o seguimiento de proyectos.",
     superpower: "Optimismo contagioso y capacidad de iniciar.",
     challenge: "Desarrollar la paciencia y un enfoque más metódico.",
-    challengeTrait: "conscientiousness"
+    challengeTrait: "conscientiousness",
   },
   "extraversion-agreeableness": {
     name: "El Líder Carismático",
-    description: "Tienes una energía contagiante y no tienes miedo de tomar la iniciativa. La gente te sigue naturalmente, aunque a veces tu franqueza puede ser un poco directa para otros.",
+    description:
+      "Tienes una energía contagiante y no tienes miedo de tomar la iniciativa. La gente te sigue naturalmente, aunque a veces tu franqueza puede ser un poco directa para otros.",
     superpower: "Inspirar y movilizar a los demás.",
     challenge: "Practicar la escucha activa y la empatía en tus interacciones.",
-    challengeTrait: "agreeableness"
+    challengeTrait: "agreeableness",
   },
   "extraversion-neuroticism": {
     name: "El Histrión Emocional",
-    description: "Experimentas las emociones con intensidad y las expresas abiertamente. Tu mundo social es vibrante, pero tu alta reactividad emocional puede llevar a dramas o picos de ansiedad en público.",
+    description:
+      "Experimentas las emociones con intensidad y las expresas abiertamente. Tu mundo social es vibrante, pero tu alta reactividad emocional puede llevar a dramas o picos de ansiedad en público.",
     superpower: "Expresividad apasionada y alta visibilidad.",
     challenge: "Encontrar técnicas de regulación emocional en entornos sociales.",
-    challengeTrait: "neuroticism"
+    challengeTrait: "neuroticism",
   },
 
   // ==========================================================
@@ -103,79 +116,94 @@ const archetypes = {
   // ==========================================================
   "agreeableness-openness": {
     name: "El Pacificador Práctico",
-    description: "Priorizas la cooperación y la bondad por encima de la experimentación radical. Tiendes a seguir métodos probados y valores sociales establecidos, prefiriendo la estabilidad a la novedad constante.",
+    description:
+      "Priorizas la cooperación y la bondad por encima de la experimentación radical. Tiendes a seguir métodos probados y valores sociales establecidos, prefiriendo la estabilidad a la novedad constante.",
     superpower: "Construcción de consenso y estabilidad social.",
-    challenge: "Aceptar el cambio y la exploración de ideas no convencionales.",
-    challengeTrait: "openness"
+    challenge:
+      "Aceptar el cambio y la exploración de ideas no convencionales.",
+    challengeTrait: "openness",
   },
   "agreeableness-conscientiousness": {
     name: "El Mediador Relajado",
-    description: "Tu principal meta es la armonía y la comodidad en las relaciones. Tiendes a ser flexible y dejas pasar el rigor y la organización si interfieren con la buena voluntad.",
+    description:
+      "Tu principal meta es la armonía y la comodidad en las relaciones. Tiendes a ser flexible y dejas pasar el rigor y la organización si interfieren con la buena voluntad.",
     superpower: "Tacto diplomático y fomento de la confianza.",
-    challenge: "Establecer límites personales y adherirte a planes rigurosos.",
-    challengeTrait: "conscientiousness"
+    challenge:
+      "Establecer límites personales y adherirte a planes rigurosos.",
+    challengeTrait: "conscientiousness",
   },
   "agreeableness-extraversion": {
     name: "El Protector Empático",
-    description: "Tienes una habilidad innata para conectar con los demás y hacer que se sientan cómodos y escuchados. Valoras la armonía, aunque a veces te cuesta un poco ser el centro de atención.",
+    description:
+      "Tienes una habilidad innata para conectar con los demás y hacer que se sientan cómodos y escuchados. Valoras la armonía, aunque a veces te cuesta un poco ser el centro de atención.",
     superpower: "Crear conexiones profundas y genuinas.",
     challenge: "Compartir tus propias ideas y opiniones con más confianza.",
-    challengeTrait: "extraversion"
+    challengeTrait: "extraversion",
   },
   "agreeableness-neuroticism": {
     name: "El Altruista Angustiado",
-    description: "Sientes profundamente las necesidades de los demás, pero esta sensibilidad a menudo conduce a la preocupación y la autocrítica. Te sacrificas por otros, pero te sientes agotado o ansioso.",
+    description:
+      "Sientes profundamente las necesidades de los demás, pero esta sensibilidad a menudo conduce a la preocupación y la autocrítica. Te sacrificas por otros, pero te sientes agotado o ansioso.",
     superpower: "Gran compasión y dedicación a los demás.",
     challenge: "Priorizar tu bienestar emocional y practicar el autocuidado.",
-    challengeTrait: "neuroticism"
+    challengeTrait: "neuroticism",
   },
-  
+
   // ==========================================================
   // 5. Neuroticismo (Neuroticism) Alto
   // ==========================================================
   "neuroticism-openness": {
     name: "El Sensitivo Racional",
-    description: "Buscas el orden y la lógica para controlar tus intensas emociones. Tu ansiedad te impulsa a planificar meticulosamente para evitar desastres o imprevistos.",
+    description:
+      "Buscas el orden y la lógica para controlar tus intensas emociones. Tu ansiedad te impulsa a planificar meticulosamente para evitar desastres o imprevistos.",
     superpower: "Intuición para el riesgo y atención al detalle.",
-    challenge: "Permitirte la espontaneidad y aceptar la incertidumbre de la vida.",
-    challengeTrait: "openness"
+    challenge:
+      "Permitirte la espontaneidad y aceptar la incertidumbre de la vida.",
+    challengeTrait: "openness",
   },
   "neuroticism-conscientiousness": {
     name: "El Artista Sensible",
-    description: "Sientes las emociones con gran intensidad, lo que te da una profunda capacidad para la empatía y la creatividad. Sin embargo, esta sensibilidad a veces puede llevar a la preocupación y la duda.",
+    description:
+      "Sientes las emociones con gran intensidad, lo que te da una profunda capacidad para la empatía y la creatividad. Sin embargo, esta sensibilidad a veces puede llevar a la preocupación y la duda.",
     superpower: "Profundidad emocional y creatividad.",
     challenge: "Construir rutinas que te den estabilidad y confianza.",
-    challengeTrait: "conscientiousness"
+    challengeTrait: "conscientiousness",
   },
   "neuroticism-extraversion": {
     name: "El Retraído Cauteloso",
-    description: "Tu ansiedad y cautela te hacen preferir entornos tranquilos y familiares. La interacción social es una fuente potencial de estrés, lo que limita tus oportunidades de crecimiento externo.",
+    description:
+      "Tu ansiedad y cautela te hacen preferir entornos tranquilos y familiares. La interacción social es una fuente potencial de estrés, lo que limita tus oportunidades de crecimiento externo.",
     superpower: "Autoconocimiento y prudencia.",
-    challenge: "Aceptar pequeños riesgos sociales y buscar el apoyo de tu círculo íntimo.",
-    challengeTrait: "extraversion"
+    challenge:
+      "Aceptar pequeños riesgos sociales y buscar el apoyo de tu círculo íntimo.",
+    challengeTrait: "extraversion",
   },
   "neuroticism-agreeableness": {
     name: "El Desconfiado Exigente",
-    description: "Eres muy crítico y cínico, usando el escepticismo como escudo contra el dolor emocional. Tiendes a dudar de las intenciones de los demás, lo que dificulta la formación de vínculos profundos.",
+    description:
+      "Eres muy crítico y cínico, usando el escepticismo como escudo contra el dolor emocional. Tiendes a dudar de las intenciones de los demás, lo que dificulta la formación de vínculos profundos.",
     superpower: "Evaluación realista de situaciones difíciles.",
-    challenge: "Practicar la empatía y construir activamente la confianza en tus relaciones.",
-    challengeTrait: "agreeableness"
+    challenge:
+      "Practicar la empatía y construir activamente la confianza en tus relaciones.",
+    challengeTrait: "agreeableness",
   },
 
   // ==========================================================
-  // Default (Bajo contraste o empate)
+  // Default
   // ==========================================================
-  "default": {
+  default: {
     name: "El Individuo Equilibrado",
-    description: "Tus rasgos de personalidad están en armonía, dándote una gran flexibilidad para adaptarte a diferentes situaciones. No tienes picos extremos, lo que te convierte en una persona versátil.",
+    description:
+      "Tus rasgos de personalidad están en armonía, dándote una gran flexibilidad para adaptarte a diferentes situaciones. No tienes picos extremos, lo que te convierte en una persona versátil.",
     superpower: "Adaptabilidad y balance.",
-    challenge: "Descubrir en qué área te gustaría destacar y profundizar.",
-    challengeTrait: "openness"
-  }
+    challenge:
+      "Descubrir en qué área te gustaría destacar y profundizar.",
+    challengeTrait: "openness",
+  },
 };
 
-// 2. Función mejorada para calcular el arquetipo con tolerancias y control de empates
-function calculateArchetype(profile) {
+// 2️⃣ Función ajustable
+function calculateArchetype(profile, toleranciaEmpate = 0.05, toleranciaDiferencia = 0.1) {
   if (!profile) return archetypes["default"];
 
   const traits = {
@@ -186,26 +214,23 @@ function calculateArchetype(profile) {
     neuroticism: profile.neuroticism,
   };
 
-  // Ordenamos los rasgos de mayor a menor
   const sortedTraits = Object.entries(traits).sort((a, b) => b[1] - a[1]);
   const [topTrait, topValue] = sortedTraits[0];
   const [secondTrait, secondValue] = sortedTraits[1];
   const [bottomTrait, bottomValue] = sortedTraits[sortedTraits.length - 1];
 
-  // --- Opción B: Control de empates entre rasgos altos ---
-  if (Math.abs(topValue - secondValue) < 0.05) {
+  // Ajuste de tolerancia dinámica
+  if (Math.abs(topValue - secondValue) < toleranciaEmpate) {
     return archetypes["default"];
   }
 
-  // --- Opción A: Umbral de diferencia mínima ---
   const diff = topValue - bottomValue;
-  if (diff < 0.1) {
+  if (diff < toleranciaDiferencia) {
     return archetypes["default"];
   }
 
-  // Construimos la clave del arquetipo
   const key = `${topTrait}-${bottomTrait}`;
   return archetypes[key] || archetypes["default"];
 }
 
-module.exports = { calculateArchetype };
+module.exports = { calculateArchetype, archetypes };
